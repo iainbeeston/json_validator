@@ -2,6 +2,8 @@
 
 [![Build Status](http://img.shields.io/travis/iainbeeston/json_validator/master.svg)](https://travis-ci.org/iainbeeston/json_validator)
 [![Code Climate](http://img.shields.io/codeclimate/github/iainbeeston/json_validator.svg)](https://codeclimate.com/github/iainbeeston/json_validator)
+[![Gem Version](http://img.shields.io/gem/v/json_validator.svg)](https://rubygems.org/gems/json_validator)
+
 
 JsonValidator is an ActiveModel validator that validates any hash field against [JSONSchema](http://json-schema.org), returning errors in the model's own `errors` attribute.
 
