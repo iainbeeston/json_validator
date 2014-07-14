@@ -2,21 +2,19 @@ require 'spec_helper'
 require 'active_model'
 require 'json_validator'
 
-describe JsonValidator do
-  let(:fake) do
-    Class.new do
-      include ActiveModel::Validations
+class FakeValidatingModel
+  include ActiveModel::Validations
 
-      attr_accessor :json_data
+  attr_accessor :json_data
 
-      def initialize(json_data)
-        self.json_data = json_data.to_hash
-      end
-    end
+  def initialize(json_data)
+    self.json_data = json_data.to_hash
   end
+end
 
+describe JsonValidator do
   describe '#validate_each' do
-    let(:model) { fake.new(json_data) }
+    let(:model) { FakeValidatingModel.new(json_data) }
     subject { described_class.new(attributes: [:json_data], schema: json_schema) }
 
     context 'when the schema is empty' do
