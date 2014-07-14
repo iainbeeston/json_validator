@@ -126,4 +126,10 @@ describe JsonValidator do
       end
     end
   end
+
+  describe '#VERSION' do
+    it 'is the same as JsonValidatorMeta::VERSION' do
+      expect(described_class.const_get(:VERSION)).to eq(JsonValidatorMeta::VERSION)
+    end
+  end
 end

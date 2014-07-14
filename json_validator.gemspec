@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "json_validator"
+require "json_validator_meta"
 
 Gem::Specification.new do |spec|
   spec.name          = "json_validator"
-  spec.version       = JsonValidator::VERSION
+  spec.version       = JsonValidatorMeta::VERSION
   spec.authors       = ["Iain Beeston"]
   spec.email         = ["iain.beeston@gmail.com"]
   spec.summary       = %q{ActiveModel that validates hash fields using JSON schema}
