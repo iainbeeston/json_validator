@@ -22,11 +22,21 @@ If you're using Ruby on Rails and ActiveRecord, add a validation to your model l
 
     class Foo < ActiveRecord::Base
       validates :bar, json: {
-        schema: JSON.parse(File.read("#{model.class.table_name}_schema.json"))
+        schema: {
+          '$schema' => 'http://json-schema.org/schema#',
+          'title': 'Universal spoons schema',
+          'properties': {
+		    'handleSize': {
+			  'type': 'integer',
+			  'minimum': 0
+			}
+	      },
+          'required': ['handleSize']
+        }
       }
     end
 
-Then whenever an instance of `Foo` is saved, `Foo.bar` (assumed to be a hash) will be validated against `foo_schema.json`.
+Then whenever an instance of `Foo` is saved, `Foo.bar` (assumed to be a hash) will be validated against the inline schema specified (eg. `Foo.new(bar: { handleSize: -10 })` would be invalid, but `Foo.new(bar: { handleSize: 10 })` would be valid).
 
 Notes:
 * `schema` can be a hash or a Proc (if you'd like to define it dynamically)
