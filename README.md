@@ -1,6 +1,6 @@
 # JsonValidator
 
-TODO: Write a gem description
+JsonValidator is an ActiveModel validator that validates any hash field against [JSONSchema](http://json-schema.org), returning errors in the model's own `errors` attribute.
 
 ## Installation
 
@@ -18,7 +18,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+If you're using Ruby on Rails and ActiveRecord, add a validation to your model like this:
+
+    class Foo < ActiveRecord::Base
+      validates :bar, json: {
+        schema: JSON.parse(File.read("#{model.class.table_name}_schema.json"))
+      }
+    end
+
+Then whenever an instance of `Foo` is saved, `Foo.bar` (assumed to be a hash) will be validated against `foo_schema.json`.
+
+Notes:
+* `schema` can be a hash or a Proc (if you'd like to define it dynamically)
+* If you're using ActiveModel without Rails the process is the same.
 
 ## Contributing
 
