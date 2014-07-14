@@ -8,9 +8,12 @@ class JsonValidator < ActiveModel::EachValidator
   VERSION = JsonValidatorMeta::VERSION
 
   def validate_each(record, attribute, value)
-    errors = JSON::Validator.fully_validate(schema(record), value)
-    errors.each do |e|
-      record.errors[attribute.to_sym] << e
+    raw_errors = JSON::Validator.fully_validate(schema(record), value)
+    translated_errors = raw_errors.map do |e|
+      translate_message(e)
+    end
+    translated_errors.each do |e|
+      record.errors.add(attribute, e)
     end
   end
 
@@ -22,5 +25,10 @@ class JsonValidator < ActiveModel::EachValidator
     else
       options[:schema].to_hash
     end
+  end
+
+  def translate_message(msg)
+    # remove suffix
+    msg.gsub!(/ in schema .*$/, '')
   end
 end

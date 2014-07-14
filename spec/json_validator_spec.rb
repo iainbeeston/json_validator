@@ -54,7 +54,7 @@ describe JsonValidator do
           {}
         ).to(
           {
-            json_data: ["The property '#/' did not contain a required property of 'soup' in schema f14d8cc1-b124-5b71-a05a-6407e9297d65#"]
+            json_data: ["The property '#/' did not contain a required property of 'soup'"]
           }
         )
       end
@@ -92,7 +92,7 @@ describe JsonValidator do
           {}
         ).to(
           {
-            json_data: ["The property '#/menu' was not of a minimum string length of 200 in schema 40148e2f-45d6-51b7-972a-179bd9de61d6#"]
+            json_data: ["The property '#/menu' was not of a minimum string length of 200"]
           }
         )
       end
@@ -124,6 +124,15 @@ describe JsonValidator do
           expect(subject.schema(double)).to eq(foo: :bar)
         end
       end
+    end
+  end
+
+  describe '#translate_message' do
+    subject { described_class.new(attributes: [:name], schema: { foo: :bar } ) }
+
+    it 'translates json-schema messages to slightly more readable ones' do
+      msg = "The property '#/menu' was not of a minimum string length of 200 in schema 40148e2f-45d6-51b7-972a-179bd9de61d6#"
+      expect(subject.translate_message(msg)).to eq("The property '#/menu' was not of a minimum string length of 200")
     end
   end
 
