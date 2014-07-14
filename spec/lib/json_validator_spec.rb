@@ -129,8 +129,24 @@ describe JsonValidator do
     end
   end
 
+  describe '#json' do
+    subject { described_class.new(attributes: [:name], schema: {}) }
+
+    it 'returns the input when passed a hash' do
+      expect(subject.json('foo' => 'bar')).to eq('foo' => 'bar')
+    end
+
+    it 'parses the input as JSON when passed a string' do
+      expect(subject.json('{"foo": "bar"}')).to eq('foo' => 'bar')
+    end
+
+    it 'calls #to_hash when passed any other object' do
+      expect(subject.json(double(to_hash: { 'foo' => 'bar' }))).to eq('foo' => 'bar')
+    end
+  end
+
   describe '#translate_message' do
-    subject { described_class.new(attributes: [:name], schema: { foo: :bar } ) }
+    subject { described_class.new(attributes: [:name], schema: { foo: :bar }) }
 
     it 'translates json-schema messages to slightly more readable ones' do
       msg = "The property '#/menu' was not of a minimum string length of 200 in schema 40148e2f-45d6-51b7-972a-179bd9de61d6#"

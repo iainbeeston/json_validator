@@ -2,13 +2,14 @@ require 'json_validator_meta'
 # activemodel validators have an undeclared dependency on the hash extensions from active support
 require 'active_support/core_ext/hash'
 require 'active_model/validator'
+require 'json'
 require 'json-schema'
 
 class JsonValidator < ActiveModel::EachValidator
   VERSION = JsonValidatorMeta::VERSION
 
   def validate_each(record, attribute, value)
-    raw_errors = JSON::Validator.fully_validate(schema(record), value)
+    raw_errors = JSON::Validator.fully_validate(schema(record), json(value))
     translated_errors = raw_errors.map do |e|
       translate_message(e)
     end
@@ -22,6 +23,14 @@ class JsonValidator < ActiveModel::EachValidator
       options[:schema].call(record)
     else
       options[:schema].to_hash
+    end
+  end
+
+  def json(value)
+    if value.respond_to?(:to_hash)
+      value.to_hash
+    else
+      JSON.parse(value.to_s)
     end
   end
 
