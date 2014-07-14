@@ -17,8 +17,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activesupport"
-  spec.add_dependency "activemodel"
+  spec.add_dependency "activesupport", ">= 3.2"
+  spec.add_dependency "activemodel", ">= 3.2"
   spec.add_dependency "json-schema"
   spec.add_dependency "json"
 
