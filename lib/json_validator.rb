@@ -5,10 +5,6 @@ require 'active_model/validator'
 require 'json-schema'
 
 class JsonValidator < ActiveModel::EachValidator
-
-  def initialize(options)
-    super
-  end
   VERSION = JsonValidatorMeta::VERSION
 
   def validate_each(record, attribute, value)

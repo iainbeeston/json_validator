@@ -1,6 +1,6 @@
-require 'json_validator'
 require 'spec_helper'
 require 'active_model'
+require 'json_validator'
 
 describe JsonValidator do
   let(:fake) do
