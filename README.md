@@ -5,19 +5,9 @@
 
 JsonValidator is an ActiveModel validator that validates any hash field against [JSONSchema](http://json-schema.org), returning errors in the model's own `errors` attribute.
 
-## Installation
+This gem was originally written to provide deep validation of JSON attributes, which are available alongside primative types in recent versions of [PostgreSQL](http://www.postgresql.org), but it works equally well with ActiveModel objects.
 
-Add this line to your application's Gemfile:
-
-    gem 'json_validator'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install json_validator
+Most of the functionality is dependent on the wonderful [json-schema](https://github.com/hoxworth/json-schema) gem.
 
 ## Usage
 
@@ -39,16 +29,6 @@ If you're using Ruby on Rails and ActiveRecord, add a validation to your model l
       }
     end
 
-Then whenever an instance of `Foo` is saved, `Foo.bar` (assumed to be a hash) will be validated against the inline schema specified (eg. `Foo.new(bar: { handleSize: -10 })` would be invalid, but `Foo.new(bar: { handleSize: 10 })` would be valid).
+Then whenever an instance of `Foo` is saved, `Foo.bar` (assumed to be a hash) will be validated against the JSON schema specified. In this case, `Foo.new(bar: { handleSize: -10 })` would be invalid, but `Foo.new(bar: { handleSize: 10 })` would be valid.
 
-Notes:
-* `schema` can be a hash or a Proc (if you'd like to define it dynamically)
-* If you're using ActiveModel without Rails the process is the same.
-
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/json_validator/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+The attribute being validated can be either a hash or a string (which will be parsed as JSON). The schema can be either a hash or a Proc that returns a hash (if you'd like to decide on the schema at runtime), and there's no reason why you could not load your schema from a .json file.
