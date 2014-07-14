@@ -97,15 +97,19 @@ describe JsonValidator do
     end
   end
 
-  describe '#schema' do
-    context 'when not initialized with a schema' do
-      subject { described_class.new(attributes: [:name]) }
-
-      it 'is an empty hash' do
-        expect { subject.schema(double) }.to raise_error(ArgumentError).with_message(':schema cannot be blank')
+  describe '#initialize' do
+    context 'when a schema is not specified' do
+      it 'raises an error' do
+        expect {
+          described_class.new(attributes: [:name])
+        }.to raise_error(ArgumentError).with_message(
+          'Schema unspecified. Please specify :schema as either a Proc or a hash'
+        )
       end
     end
+  end
 
+  describe '#schema' do
     context 'when initialized with a :schema option' do
       context 'that is a lambda' do
         subject { described_class.new(attributes: [:name], schema: ->(model) { { foo: model.name } }) }

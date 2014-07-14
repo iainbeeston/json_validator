@@ -18,9 +18,7 @@ class JsonValidator < ActiveModel::EachValidator
   end
 
   def schema(record)
-    if options[:schema].nil?
-      fail ArgumentError, ':schema cannot be blank'
-    elsif options[:schema].respond_to?(:call)
+    if options[:schema].respond_to?(:call)
       options[:schema].call(record)
     else
       options[:schema].to_hash
@@ -30,5 +28,9 @@ class JsonValidator < ActiveModel::EachValidator
   def translate_message(msg)
     # remove suffix
     msg.gsub!(/ in schema .*$/, '')
+  end
+
+  def check_validity!
+    fail ArgumentError, :'Schema unspecified. Please specify :schema as either a Proc or a hash' if options[:schema].nil?
   end
 end
