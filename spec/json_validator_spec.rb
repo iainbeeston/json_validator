@@ -17,7 +17,7 @@ describe JsonValidator do
 
   describe '#validate_each' do
     let(:model) { fake.new(json_data) }
-    subject { JsonValidator.new(attributes: [:json_data], schema: json_schema) }
+    subject { described_class.new(attributes: [:json_data], schema: json_schema) }
 
     context 'when the schema is empty' do
       let(:json_data) do
@@ -25,7 +25,7 @@ describe JsonValidator do
           'soup' => 'tastes good'
         }
       end
-      subject { JsonValidator.new(attributes: [:json_data], schema: {}) }
+      subject { described_class.new(attributes: [:json_data], schema: {}) }
 
       it 'does not set any errors' do
         expect { subject.validate_each(model, :json_data, json_data) }.to_not change { model.errors.empty? }
@@ -101,7 +101,7 @@ describe JsonValidator do
 
   describe '#schema' do
     context 'when not initialized with a schema' do
-      subject { JsonValidator.new(attributes: [:name]) }
+      subject { described_class.new(attributes: [:name]) }
 
       it 'is an empty hash' do
         expect { subject.schema(double) }.to raise_error(ArgumentError).with_message(':schema cannot be blank')
@@ -110,7 +110,7 @@ describe JsonValidator do
 
     context 'when initialized with a :schema option' do
       context 'that is a lambda' do
-        subject { JsonValidator.new(attributes: [:name], schema: ->(model) { { foo: model.name } }) }
+        subject { described_class.new(attributes: [:name], schema: ->(model) { { foo: model.name } }) }
 
         it 'is the result of the lambda (passed the model)' do
           expect(subject.schema(double(name: 'ack'))).to eq(foo: 'ack')
@@ -118,7 +118,7 @@ describe JsonValidator do
       end
 
       context 'that is a hash' do
-        subject { JsonValidator.new(attributes: [:name], schema: { foo: :bar }) }
+        subject { described_class.new(attributes: [:name], schema: { foo: :bar }) }
 
         it 'is the hash' do
           expect(subject.schema(double)).to eq(foo: :bar)
