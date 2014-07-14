@@ -17,19 +17,23 @@ If you're using Ruby on Rails and ActiveRecord, add a validation to your model l
 
     class Foo < ActiveRecord::Base
       validates :bar, json: {
-        schema: {
-          '$schema' => 'http://json-schema.org/schema#',
-          'title': 'Universal spoons schema',
-          'properties': {
-		    'handleSize': {
-			  'type': 'integer',
-			  'minimum': 0
-			}
-	      },
-          'required': ['handleSize']
-        }
+        schema: File.read(JSON.parse('foo_schema.json'))
       }
     end
+
+And you have a schema file (ie. `foo_schema.json`) like this:
+
+    {
+      "$schema": "http://json-schema.org/schema#",
+      "title": "Universal spoons schema",
+      "properties": {
+        "handleSize": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["handleSize"]
+    }
 
 Then whenever an instance of `Foo` is saved, `Foo.bar` (assumed to be a hash) will be validated against the JSON schema specified. In this case, `Foo.new(bar: { handleSize: -10 })` would be invalid, but `Foo.new(bar: { handleSize: 10 })` would be valid.
 
