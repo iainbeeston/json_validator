@@ -1,6 +1,7 @@
 # activemodel validators have an undeclared dependency on the hash extensions from active support
 require 'active_support/core_ext/hash'
 require 'active_model/validator'
+require 'json-schema'
 
 class JsonValidator < ActiveModel::EachValidator
   VERSION = '0.0.1'
@@ -10,6 +11,10 @@ class JsonValidator < ActiveModel::EachValidator
   end
 
   def validate_each(record, attribute, value)
+    errors = JSON::Validator.fully_validate(schema(record), value)
+    errors.each do |e|
+      record.errors[attribute.to_sym] << e
+    end
   end
 
   def schema(record)
