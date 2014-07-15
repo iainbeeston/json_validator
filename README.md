@@ -46,7 +46,6 @@ Then whenever an instance of `Foo` is saved, `Foo.bar` (assumed to be a hash) wi
 f = Foo.new(bar: { handleSize: -10 })
 f.valid? # false
 f.errors.full_messages # ["Bar is invalid (the property '#/handleSize' did not have a minimum value of 0, inclusively)"]
-
 ~~~
 
 The attribute being validated can be either a hash or a string (which will be parsed as JSON). The schema can be either a hash or a Proc that returns a hash (if you'd like to decide on the schema at runtime), and there's no reason why you could not load your schema from a .json file.
