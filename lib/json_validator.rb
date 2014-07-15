@@ -37,6 +37,10 @@ class JsonValidator < ActiveModel::EachValidator
   def translate_message(msg)
     # remove suffix
     msg.gsub!(/ in schema .*$/, '')
+    # lowercase first letter (eg. 'The' becomes 'the')
+    msg.gsub!(/^./) { |m| m.downcase }
+    # prefix with 'is invalid'
+    msg.gsub!(/^(.*)$/, 'is invalid (\1)')
   end
 
   def check_validity!
