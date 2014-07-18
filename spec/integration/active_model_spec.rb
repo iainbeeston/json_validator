@@ -20,7 +20,7 @@ class FakeActiveModel
   }
 end
 
-describe FakeActiveModel do
+describe 'ActiveModel' do
   it 'sets validation errors using JsonValidator' do
     expect(FakeActiveModel.new(hello: :world)).to_not be_valid
   end
