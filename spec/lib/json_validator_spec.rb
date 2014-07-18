@@ -95,6 +95,44 @@ describe JsonValidator do
         )
       end
     end
+
+    context 'when a schema specifies a pattern' do
+      let(:json_data) do
+        {
+          'salutation' => 'MR_TICKLE',
+          'house-name' => 'Picklewharf'
+        }
+      end
+      let(:json_schema) do
+        {
+          'type' => 'object',
+          'properties' => {
+            'salutation' => {
+              'type' => 'string',
+              'pattern' => '^\w{0,3}$'
+            },
+            'house-name' => {
+              'type' => 'string',
+              'pattern' => '^[A-Z][a-z]+$'
+            }
+          }
+        }
+      end
+
+      it 'sets errors for fields that do not match the pattern specified' do
+        expect {
+          subject.validate_each(model, :json_data, json_data)
+        }.to change {
+          model.errors.to_hash
+        }.from(
+          {}
+        ).to(
+          {
+            json_data: ["is invalid (the property '#/salutation' value \"MR_TICKLE\" did not match the regex '^\\w{0,3}$')"]
+          }
+        )
+      end
+    end
   end
 
   describe '#initialize' do
