@@ -17,6 +17,30 @@ describe JsonValidator do
     let(:model) { FakeValidatingModel.new(json_data) }
     subject { described_class.new(attributes: [:json_data], schema: json_schema) }
 
+    context 'given a schema' do
+      let(:json_data) do
+        {
+          'bread' => 'I like'
+        }
+      end
+      let(:json_schema) do
+        {
+          'type' => 'object',
+          'additionalProperties' => false,
+          'properties' => {
+            'bread' => {
+              'type' => 'string'
+            }
+          }
+        }
+      end
+      subject { described_class.new(attributes: [:json_data], schema: json_schema) }
+
+      it 'does not set any errors if the model is valid' do
+        expect { subject.validate_each(model, :json_data, json_data) }.to_not change { model.errors.empty? }
+      end
+    end
+
     context 'when the schema is empty' do
       let(:json_data) do
         {
