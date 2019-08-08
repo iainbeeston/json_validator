@@ -4,6 +4,10 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
+  - 2.3
+  - 2.4
+  - 2.5
+  - 2.6
   - jruby
   - rbx
 gemfile:
@@ -11,3 +15,6 @@ gemfile:
   - .gemfiles/rails4_0.gemfile
   - .gemfiles/rails4_1.gemfile
   - .gemfiles/rails4_2.gemfile
+  - .gemfiles/rails5_0.gemfile
+  - .gemfiles/rails5_1.gemfile
+  - .gemfiles/rails5_2.gemfile
